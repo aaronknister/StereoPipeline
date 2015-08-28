@@ -29,7 +29,11 @@ def createFolder(path):
     if path == '':
         return
     if not os.path.exists(path):
-        os.mkdir(path)
+        try:
+            os.mkdir(path)
+        except OSError as e:
+            if e.errno != errno.EEXIST: # Continue if the error is "file exists"
+                raise # Re-raise exception otherwise
 
 def removeIfExists(path):
     """Removes a file if it exists"""
